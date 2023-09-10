@@ -1,0 +1,6 @@
+.button{
+  @apply px-4 py-2 font-semibold text-sm  text-white rounded shadow-sm;
+}
+.bordered{
+  @apply border-[6px] border-solid border-[#d4ddc8] rounded-lg ring-1 ring-white;
+}
