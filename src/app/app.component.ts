@@ -136,5 +136,6 @@ export class AppComponent implements OnInit {
   deleteUser(index: number): void {
     this.userService.deleteUser(index);
     this.userList = this.userService.getUsers();
+    this.showErrors = false;
   }
 }
