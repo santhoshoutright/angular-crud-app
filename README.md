@@ -1,5 +1,6 @@
 # App will look like below and go ahead clone this repository
-![screenshot-localhost_4200-2023 09 10-00_59_39](https://github.com/santhoshoutright/angular-crud-app/assets/43174341/5705a2d9-cea7-4f48-a349-f7563a07a434)
+![angular-crud-app](https://github.com/santhoshoutright/angular-crud-app/assets/43174341/1c90bc6a-5a2a-4289-b2d2-dd576b85f151)
+
 
 # AngularCrudApp
 
