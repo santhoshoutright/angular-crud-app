@@ -6,7 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserFormComponent } from './user-form/user-form.component';
 import { UsersTableComponent } from './users-table/users-table.component';
-import { UsersService } from "./services/users.service";
+import { UserService } from './services/users.service';
+
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import { UsersService } from "./services/users.service";
     BrowserModule,
     ReactiveFormsModule
   ],
-  providers: [UsersService],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

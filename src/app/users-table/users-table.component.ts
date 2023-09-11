@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // import { HttpClient } from '@angular/common/http';
 // import { Firestore, collection, deleteDoc } from '@angular/fire/firestore';
-import { UsersService } from './../services/users.service';
+import { UserService } from './../services/users.service';
 
 @Component({
   selector: 'app-users-table',
@@ -37,7 +37,7 @@ export class UsersTableComponent implements OnInit {
     },
   ];
 
-  constructor(private service: UsersService) { }
+  constructor(private service: UserService) { }
 
 
   getUsers() {

@@ -18,10 +18,171 @@
       Registration form
     </h1>
 
-    <app-user-form></app-user-form>
+    <!--  App User Form Start -->
+    <!--  (ngSubmit)="addUser()" -->
+    <form [formGroup]="userForm" class="max-w-md mx-auto" (ngSubmit)="onSubmit()">
+      <!-- Avatar -->
+      <div class="mb-4 flex justify-center w-full">
+        <!-- <label for="avatar" class="block text-gray-500 font-bold mb-1">Avatar</label> -->
+        <label for="avatar" class="relative rounded-full  ">
+          <img [src]="userAvatar ?? '/assets/avatar-placeholder.jpg' " alt="User Avatar"
+            class="w-24 h-24 object-cover bordered">
+        </label>
+        <!-- Input for selecting a file -->
+        <!-- <input type="file" id="avatar" formControlName="avatar" (change)="onAvatarChange($event)" accept="image/*"
+          class="hidden"> -->
+
+        <!-- Display the selected file name -->
+        <!-- <div *ngIf="userForm.get('avatar')?.value" class="selected-file">
+          Selected File: {{ userForm.get('avatar')?.value }}
+        </div> -->
+
+
+      </div>
+      <!-- First Name and Last Name -->
+      <div class="mb-4 flex gap-5 w-full">
+        <div class="w-full">
+          <input formControlName="firstName" type="text" class="form-input flex-1 bordered" placeholder="First Name">
+          <div *ngIf="showErrors && userForm.get('firstName')?.hasError('required')" class="error">
+            First Name is required.
+          </div>
+          <div *ngIf="showErrors && userForm.get('firstName')?.hasError('pattern')" class="error">
+            First Name should contain only letters and spaces.
+          </div>
+        </div>
+        <div class="w-full">
+          <input formControlName="lastName" type="text" class="form-input flex-1 bordered" placeholder="Last Name">
+          <div *ngIf="showErrors && userForm.get('lastName')?.hasError('required')" class="error">
+            Last Name is required.
+          </div>
+          <div *ngIf="showErrors && userForm.get('lastName')?.hasError('pattern')" class="error">
+            Last Name should contain only letters and spaces.
+          </div>
+        </div>
+      </div>
+
+      <!-- User Name -->
+      <div class="mb-4 flex justify-center relative flex-col">
+        <label for="username" class="icon-label">
+          <img src='/assets/icons/person.svg' class="icon" />
+        </label>
+        <!-- <i class="fas fa-user text-gray-500 mr-2"></i> -->
+        <input id="username" formControlName="username" type="text" class="form-input bordered" placeholder="User Name">
+        <div *ngIf="showErrors && userForm.get('username')?.hasError('required')" class="error">
+          Username is required.
+        </div>
+        <div *ngIf="showErrors && userForm.get('username')?.hasError('pattern')" class="error">
+          Username should contain only letters and spaces.
+        </div>
+      </div>
+
+      <!-- Tel. Number -->
+      <div class="mb-4 flex justify-center relative flex-col">
+        <label for="email" class="icon-label">
+          <img src='/assets/icons/email.svg' class="icon" />
+        </label>
+        <input id="email" formControlName="email" type="email" class="form-input bordered" placeholder="Email">
+        <div *ngIf="showErrors && userForm.get('email')?.hasError('required')" class="error">
+          Email is required.
+        </div>
+        <div *ngIf="showErrors && userForm.get('email')?.hasError('email')" class="error">
+          Email address is not valid.
+        </div>
+      </div>
+
+      <!-- Tel. Number -->
+      <div class="mb-4 flex justify-center relative flex-col">
+        <label for="mobileNumber" class="icon-label">
+          <img src='/assets/icons/phone.svg' class="icon" />
+        </label>
+        <input id="mobileNumber" formControlName="mobileNumber" type="tel" class="form-input bordered"
+          placeholder="Mobile number">
+        <div *ngIf="showErrors && userForm.get('mobileNumber')?.hasError('required')" class="error">
+          Mobile number is required.
+        </div>
+        <div *ngIf="showErrors && userForm.get('mobileNumber')?.hasError('pattern')" class="error">
+          Mobile number should be 10 digit
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-4 flex justify-center relative flex-col">
+        <label for="password" class="icon-label">
+          <img src='/assets/icons/lock_open.svg' class="icon" />
+        </label>
+        <input id="password" formControlName="password" type="password" class="form-input bordered"
+          placeholder="Password">
+        <div *ngIf="showErrors && userForm.get('password')?.hasError('required')" class="error">
+          Password is required.
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="mb-4 flex justify-center relative flex-col">
+        <label for="confirmPassword" class="icon-label">
+          <img src='/assets/icons/lock.svg' class="icon" />
+        </label>
+        <input id="confirmPassword" formControlName="confirmPassword" type="password" class="form-input bordered"
+          placeholder="Confirm Password">
+
+        <div *ngIf="showErrors && userForm.get('confirmPassword')?.hasError('required')" class="error">
+          Confirm Password is required.
+        </div>
+        <div *ngIf="showErrors && userForm.get('confirmPassword')?.hasError('passwordMismatch')" class="error">
+          Passwords do not match.
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <!-- Submit Button (Change "OK" to "Update") -->
+      <div class="text-center flex justify-center gap-2">
+        <button type="submit"
+          class="px-4 py-1 w-24 font-semibold text-xl rounded bordered bg-white text-gray-600 outline-none hover:ring-2 ring-white"
+          [hidden]="editingIndex !== null">OK</button>
+        <button type="submit"
+          class="px-4 py-1 w-28 font-semibold text-xl rounded bordered bg-white text-gray-600 outline-none hover:ring-2 ring-white"
+          [hidden]="editingIndex === null">Update</button>
+        <button type="button"
+          class="px-4 py-1 w-28 font-semibold text-xl rounded bordered bg-white text-gray-600 outline-none hover:ring-2 ring-white"
+          [hidden]="editingIndex === null" (click)="cancelEdit()">Cancel</button>
+      </div>
+    </form>
+    <!--  App User Form End -->
   </div>
   <div class="max-w-5xl mx-auto py-10">
-    <app-users-table></app-users-table>
+    <table class="table-auto shadow-lg w-full bordered overflow-hidden border-collapse">
+      <thead>
+        <tr class="bg-[#d4ddc8] border-b border-white text-gray-600 font-semibold text-base">
+          <th class="py-3 px-4 text-left  capitalize" *ngFor="let column of columns">{{column['label']}}</th>
+          <th class="py-3 px-4  text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Check if userList is empty -->
+        <tr *ngIf="userList.length === 0" class="bg-white border-b-4 border-[#d4ddc8] text-gray-600">
+          <td [attr.colspan]="columns.length + 1" class="text-center py-4 text-gray-600">
+            No users found. You can add a user using the form above.
+          </td>
+        </tr>
+
+        <!-- Display user data if userList is not empty -->
+        <tr *ngFor="let user of userList; let i = index" class="bg-white border-b-4 border-[#d4ddc8] text-gray-600">
+          <ng-container *ngFor="let column of columns">
+            <td *ngIf="column.id !== 'avatar' && user[column.id]" class="py-2 px-4 text-left">{{ user[column.id] }}</td>
+            <td *ngIf="column.id == 'avatar' && user.avatar" class="py-2 px-4 border-b border-gray-300 text-left">
+              <img class="w-10 h-10 rounded-full" [src]="user[column.id]"
+                [alt]="user.firstName + ' ' + user.lastName" />
+            </td>
+          </ng-container>
+          <td class="py-2 px-4 space-x-2">
+            <button type="button" class="button bg-sky-500" (click)="editUser(i)">Edit</button>
+            <button type="button" class="button bg-red-400" (click)="deleteUser(i)">Delete</button>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
   </div>
 </main>
 <router-outlet></router-outlet>

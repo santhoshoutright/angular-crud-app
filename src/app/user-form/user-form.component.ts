@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { UsersService } from './../services/users.service';
+import { UserService } from './../services/users.service';
 
 @Component({
   selector: 'app-user-form',
@@ -12,7 +12,7 @@ export class UserFormComponent implements OnInit {
   userAvatar: any; // Variable to store the selected avatar
   showErrors: boolean = false; // Add this flag
 
-  constructor(private fb: FormBuilder,private service: UsersService) {
+  constructor(private fb: FormBuilder,private service: UserService) {
     // console.log("Firestore : ", this.firestore);
     this.userForm = this.fb.group({
       // avatar: [''],
