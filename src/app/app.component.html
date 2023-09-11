@@ -21,23 +21,17 @@
     <!--  App User Form Start -->
     <!--  (ngSubmit)="addUser()" -->
     <form [formGroup]="userForm" class="max-w-md mx-auto" (ngSubmit)="onSubmit()">
-      <!-- Avatar -->
-      <div class="mb-4 flex justify-center w-full">
-        <!-- <label for="avatar" class="block text-gray-500 font-bold mb-1">Avatar</label> -->
-        <label for="avatar" class="relative rounded-full  ">
-          <img [src]="userAvatar ?? '/assets/avatar-placeholder.jpg' " alt="User Avatar"
+      <!-- Avatar Input -->
+      <div class="mb-4 flex flex-col items-center justify-center w-full">
+        <label for="avatar" class="relative rounded-full">
+          <img [src]="userAvatar ? userAvatar : '/assets/avatar-placeholder.jpg'" alt="User Avatar"
             class="w-24 h-24 object-cover bordered">
+          <input type="file" id="avatar" (change)="onAvatarChange($event)" accept="image/*" class="hidden">
         </label>
-        <!-- Input for selecting a file -->
-        <!-- <input type="file" id="avatar" formControlName="avatar" (change)="onAvatarChange($event)" accept="image/*"
-          class="hidden"> -->
-
-        <!-- Display the selected file name -->
-        <!-- <div *ngIf="userForm.get('avatar')?.value" class="selected-file">
-          Selected File: {{ userForm.get('avatar')?.value }}
-        </div> -->
-
-
+        <!-- Add this code to display the avatar upload error message -->
+        <div *ngIf="avatarError" class="error">
+          Please upload an avatar.
+        </div>
       </div>
       <!-- First Name and Last Name -->
       <div class="mb-4 flex gap-5 w-full">

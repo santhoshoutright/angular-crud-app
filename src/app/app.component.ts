@@ -15,14 +15,15 @@ export class AppComponent implements OnInit {
   userForm: FormGroup;
   userList: any[] = [];
   editingIndex: number | null = null;
-  userAvatar: any; // Variable to store the selected avatar
+  userAvatar: string | ArrayBuffer | null = null; // Use a string or ArrayBuffer to store the Data URL
   showErrors: boolean = false; // Add this flag
+  avatarError: boolean = false;
 
   columns: any[] = [
-    // {
-    //   id: "avatar",
-    //   label: "Avatar",
-    // },
+    {
+      id: "avatar",
+      label: "Avatar",
+    },
     {
       id: "firstName",
       label: "First Name",
@@ -48,7 +49,7 @@ export class AppComponent implements OnInit {
   constructor(private fb: FormBuilder, private userService: UserService) {
     // console.log("Firestore : ", this.firestore);
     this.userForm = this.fb.group({
-      // avatar: [''],
+      avatar: [''],
       firstName: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       lastName: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
       username: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
@@ -65,6 +66,22 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     // You can add any additional initialization logic here
   }
+
+
+  onAvatarChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      // Convert the selected file to a Data URL
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.userAvatar = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      this.userAvatar = null; // Reset the avatar if no file is selected
+    }
+  }
+
 
   // Custom password match validator
   passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
@@ -83,14 +100,28 @@ export class AppComponent implements OnInit {
   onSubmit(): void {
 
     this.showErrors = true;
+    if (!this.userAvatar) {
+      // No avatar uploaded, display an error and prevent form submission
+      this.avatarError = true;
+    } else {
+      this.avatarError = false;
+    }
+
     if (this.userForm.valid) {
+
+      if (!this.userAvatar) {
+        return;
+      }
+
       const userFormData = this.userForm.value as User;
 
       if (this.editingIndex !== null) {
         // Editing an existing user
+        userFormData.avatar = this.userAvatar; // Add avatar data
         this.userService.updateUser(userFormData, this.editingIndex);
       } else {
         // Adding a new user
+        userFormData.avatar = this.userAvatar; // Add avatar data
         this.userService.addUser(userFormData);
       }
 
@@ -98,6 +129,7 @@ export class AppComponent implements OnInit {
       this.editingIndex = null;
       this.userForm.reset();
       this.showErrors = false;
+      this.userAvatar = null;
     }
   }
 
@@ -113,12 +145,22 @@ export class AppComponent implements OnInit {
 
   editUser(index: number): void {
     this.editingIndex = index;
-    this.userForm.patchValue(this.userList[index]); // Use patchValue to populate the form
+    const userData = this.userList[index];
+
+    // Populate the form with the existing user data
+    this.userForm.patchValue({
+      ...userData
+    });
+
+    // Update the userAvatar to display the correct avatar
+    this.userAvatar = userData.avatar; // Assuming 'avatar' is the field in your user data for the avatar URL
   }
 
   cancelEdit(): void {
     this.editingIndex = null;
     this.userForm.reset();
+    this.showErrors = false;
+    this.userAvatar = null;
   }
 
   updateUser(): void {
